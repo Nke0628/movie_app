@@ -1,0 +1,138 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity "ユーザ" as user {
+  +id : int(10)
+  --
+  name : varchar(255)
+  *email : varchar(255)
+  email_verified_at : timestamp
+  password : varchar(255)
+  remember_token : varchar(100)
+  role : tinyint
+  delete_flag : tinyint
+  create_user_id : int(10)
+  created_at : timestamp
+  update_user_id : int(10)
+  updated_at : timestamp
+}
+
+entity "ユーザポイント" as user_points {
+  +id : int(10)
+  --
+  user_id : int(10)
+  point_rank_id : int(10) <<FK>>
+  total_point : int(10)
+  create_user_id : int(10)
+  created_at : timestamp
+  update_user_id : int(10)
+  updated_at : timestamp
+}
+
+entity "ユーザポイント履歴" as user_point_hist {
+  +id : int(10)
+  --
+  user_id : int(10)
+  point : int(10)
+  acquisition_date : char(8);
+  expire_date : char(8);
+  valid_flag : tinyint
+  create_user_id : int(10)
+  created_at : timestamp
+  update_user_id : int(10)
+  updated_at : timestamp
+}
+
+entity "ポイントランク" as point_rank {
+  +id : int(10)
+  --
+  rank_type : tinyint
+  rank_type_name : varchar(255)
+  rate : float
+  create_user_id : int(10)
+  created_at : timestamp
+  update_user_id : int(10)
+  updated_at : timestamp
+}
+
+entity "映画" as movies {
+  +movie_id : int
+  --
+  movie_name : text
+  start_date : datetime
+  end_date : datetime
+  description : varchar(255)
+  create_user_id : int
+  created_at : timestamp
+  update_user_id : int
+  updated_at : timestamp
+}
+
+entity "スケジュール" as schedule {
+  +schedule_id : int
+  --
+  movie_id : int
+  screen_id : int
+  start_time : datetime
+  end_time : datetime
+  create_user_id : int
+  created_at : timestamp
+  update_user_id : int
+  updated_at : timestamp
+}
+
+entity "座席状況" as seats_status {
+  +schedule_id : int
+  +seat_id : int
+  --
+  status : tinyint
+  create_user_id : int
+  created_at : timestamp
+  update_user_id : int
+  updated_at : timestamp
+}
+
+entity "スクリーン" as screens {
+  +screen_id : int
+  screen_name :varchar(255)
+  create_user_id : int
+  created_at : timestamp
+  update_user_id : int
+  updated_at : timestamp
+}
+
+entity "座席" as seats {
+  +seat_id : int
+  +screen_id : int
+  create_user_id : int
+  created_at : timestamp
+  update_user_id : int
+  updated_at : timestamp
+}
+
+entity "購入" as purchases {
+  +purchase_id : int(10)
+  --
+  user_id : int
+  schedule_id : int
+  seat_id : int
+  create_user_id : int
+  created_at : timestamp
+  update_user_id : int
+  updated_at : timestamp
+}
+
+user||--o{user_points
+user||--o{user_point_hist
+user_points||--||point_rank
+user||--o{purchases
+purchases||--||seats_status
+purchases||--||schedule
+movies||-o{schedule
+schedule}o--||screens
+schedule||-{seats_status
+screens||-{seats
+
+
+@enduml

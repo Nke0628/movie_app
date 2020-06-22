@@ -74,6 +74,7 @@ entity "スケジュール" as schedule {
   --
   movie_id : int
   screen_id : int
+  screen_date : datetime
   start_time : datetime
   end_time : datetime
   create_user_id : int
@@ -121,6 +122,12 @@ entity "購入" as purchases {
   created_at : timestamp
   update_user_id : int
   updated_at : timestamp
+}
+
+entity "カレンダー" as calender {
+   : int
+  day : int
+  seat_id : int
 }
 
 user||--o{user_points
